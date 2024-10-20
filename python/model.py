@@ -20,11 +20,7 @@ class KoiKoiEncoderBlock(nn.Module):
         
     def forward(self,x): 
         x = self.f2(F.relu(self.f1(x)))
-        print("after f1 relu f2")
-        print(x) 
         x = F.layer_norm(x,[x.size(-1)])
-        print("after layernorm")
-        print(x)
         x = x.permute(2,0,1)
         print("after permute")
         print(x)
@@ -32,7 +28,6 @@ class KoiKoiEncoderBlock(nn.Module):
         print("after attn encoder")
         print(x)
         x = x.permute(1,2,0) 
-        print("after permute")
         print(x) 
         return x
 
