@@ -11,15 +11,6 @@ type B = Candle<f32, i64>;
 
 fn main() {
     let device = CandleDevice::default();
-    let f: Array2<f64> = read_npy("./tensors/test.npy").unwrap();
-    let (dimx, dimy) = f.dim();
-    let flat_arr: Vec<f64> = f
-        .outer_iter().flat_map(|row| row.to_vec())
-        .collect();
-    let flat_arr: Vec<f32> = flat_arr.iter().map(|x| *x as f32).collect();
-
-    Tensor::<B,1>::from_data(flat_arr.as_slice(), &device)
-        .reshape([1, dimx, dimy]);
 
     let load_args = LoadArgs::new("./tensors/discard_sl.pt".into()); //.with_debug_print();
     let record = PyTorchFileRecorder::<FullPrecisionSettings>::new()
@@ -28,10 +19,17 @@ fn main() {
     let discard_model: DiscardModel<B> = DiscardModel::new(&device).load_record(record);
     
     
+    let f: Array2<f64> = read_npy("./tensors/test.npy").unwrap();
+    let (dimx, dimy) = f.dim();
+    let flat_arr: Vec<f64> = f
+        .outer_iter().flat_map(|row| row.to_vec())
+        .collect();
+    let flat_arr: Vec<f32> = flat_arr.iter().map(|x| *x as f32).collect();
     let f = Tensor::<B,1>::from_data(flat_arr.as_slice(), &device)
         .reshape([1, dimx, dimy]);
 
-    let mask = Tensor::from_data([0, 0, 0, 0, 0, 0,
+    let mask = Tensor::from_data([
+        0, 0, 0, 0, 0, 0,
         0, 0, 0, 1, 1, 1,
         1, 1, 1, 1, 1, 0,
         0, 0, 0, 0, 0, 0,

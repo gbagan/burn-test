@@ -7,6 +7,7 @@ from safetensors.torch import load_file
 discard_weights = load_file("./tensors/discard_sl.safetensors")
 discard_model = DiscardModel()
 discard_model.load_state_dict(discard_weights)
+
 f = np.load("./tensors/test.npy")
 f = torch.Tensor(f)
 f = f.unsqueeze(0)

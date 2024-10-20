@@ -6,7 +6,8 @@ NetParameter = {
     'nEmb':256,
     'nFw':512,
     'nAttnHead':4,
-    'nLayer':2}
+    'nLayer':2
+}
 
 
 class KoiKoiEncoderBlock(nn.Module):
