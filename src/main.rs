@@ -1,5 +1,3 @@
-use std::{array::from_fn, collections::HashSet};
-
 use ndarray::prelude::*;
 use burn::prelude::*;
 use ndarray_npy::read_npy;
@@ -30,7 +28,7 @@ fn main() {
     let discard_model: DiscardModel<B> = DiscardModel::new(&device).load_record(record);
     
     
-    let f: Tensor<Candle, 3> = Tensor::<B,1>::from_data(flat_arr.as_slice(), &device)
+    let f = Tensor::<B,1>::from_data(flat_arr.as_slice(), &device)
         .reshape([1, dimx, dimy]);
     
     let output: Tensor<Candle, 1> = discard_model.forward(f).squeeze(0);
