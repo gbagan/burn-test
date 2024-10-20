@@ -30,10 +30,20 @@ fn main() {
     
     let f = Tensor::<B,1>::from_data(flat_arr.as_slice(), &device)
         .reshape([1, dimx, dimy]);
-    
+
+    let mask = Tensor::from_data([0, 0, 0, 0, 0, 0,
+        0, 0, 0, 1, 1, 1,
+        1, 1, 1, 1, 1, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0       
+        ], &device);
+
+
     let output: Tensor<Candle, 1> = discard_model.forward(f).squeeze(0);
-    let output = (output / 10).exp();
+    let output = (output / 10).exp() * mask;
     println!("{output}");
     println!("{}", output.argmax(0));
-    //let action_output = self.action_dict[state][output.argmax()];
 }

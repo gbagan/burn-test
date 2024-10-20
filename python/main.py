@@ -10,6 +10,7 @@ discard_model.load_state_dict(discard_weights)
 f = np.load("./tensors/test.npy")
 f = torch.Tensor(f)
 f = f.unsqueeze(0)
+print(f.shape)
 mask = [0, 0, 0, 0, 0, 0,
         0, 0, 0, 1, 1, 1,
         1, 1, 1, 1, 1, 0,
@@ -22,6 +23,9 @@ mask = [0, 0, 0, 0, 0, 0,
 output = discard_model(f)
 output = output.squeeze(0).detach().numpy()
 output = np.exp(output/10.0) * mask
+
+#torch.save(discard_model, "test2.pt")
+
 print(output)
 
 #[0.         0.         0.         0.         0.         0.
@@ -32,12 +36,4 @@ print(output)
 # 0.         0.         0.         0.         0.         0.
 # 0.         0.         0.         0.         0.         0.
 # 0.         0.         0.         0.         0.         0.        ]
-
-#[0.         0.         0.         0.         0.         0.
-# 0.         0.         0.         0.63550222 0.9251641  0.86671942
-# 1.05282056 1.12088335 1.11960053 1.14039636 1.3941747  0.
-# 0.         0.         0.         0.         0.         0.
-# 0.         0.         0.         0.         0.         0.
-# 0.         0.         0.         0.         0.         0.
-# 0.         0.         0.         0.         0.         0.
-# 0.         0.         0.         0.         0.         0.      
+  
