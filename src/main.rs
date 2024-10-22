@@ -15,8 +15,8 @@ fn main() {
     let load_args = LoadArgs::new("./tensors/discard_sl.pt".into()); //.with_debug_print();
     let record = PyTorchFileRecorder::<FullPrecisionSettings>::new()
         .load(load_args, &device)
-        .expect("Should decode state successfully");
-    let discard_model: DiscardModel<B> = DiscardModel::new(&device).load_record(record);
+        .unwrap();
+    let discard_model = DiscardModel::new(&device).load_record(record);
     
     
     let f: Array2<f64> = read_npy("./tensors/test.npy").unwrap();
@@ -40,7 +40,7 @@ fn main() {
         ], &device);
 
 
-    let output: Tensor<Candle, 1> = discard_model.forward(f).squeeze(0);
+    let output: Tensor<_, 1> = discard_model.forward(f).squeeze(0);
     let output = (output / 10).exp() * mask;
     println!("{output}");
     println!("{}", output.argmax(0));
